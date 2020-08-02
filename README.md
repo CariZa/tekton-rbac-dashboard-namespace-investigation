@@ -228,9 +228,15 @@ Use all those values to create a custom kubeconfig for each user:
 
     $ cat k8s/templates/kubeconfig.tpl | envsubst > kubeconfig_admin
 
+### Helper script kubeconfig_generator
+
 ^ This is all a lot of effort so I've put together a helper script to do it all for me, just run:
 
     $ sh scripts/kubeconfig_generator.sh 
+
+### Automate all the things
+
+TODO: Automate all these steps in a helper script so in future i can just run one command and test these scenarios (or edit them and test quicker)
 
 # Useful snippet:
 
@@ -259,3 +265,4 @@ rbac only
 
 Big props to this medium post, which I regularly revisit:
 
+https://medium.com/better-programming/k8s-tips-give-access-to-your-clusterwith-a-client-certificate-dfb3b71a76fe
