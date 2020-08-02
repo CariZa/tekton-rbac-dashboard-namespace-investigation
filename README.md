@@ -236,4 +236,26 @@ Use all those values to create a custom kubeconfig for each user:
 
     $ alias pbcopy='xsel --clipboard --input'
 
+# User kubectl with the new kubeconfigs
+
+You can now test the RBAC we set up:
+
+admins
+
+    $ kubectl --kubeconfig kubeconfig_admin get pods
+    $ kubectl --kubeconfig kubeconfig_admin get pods -n admins-namespace
+
+developers
+
+    $ kubectl --kubeconfig kubeconfig_developer get pods
+    $ kubectl --kubeconfig kubeconfig_developer get pods -n developers-namespace
+
+rbac only
+
+    $ kubectl --kubeconfig kubeconfig_rbac-only get pods
+    $ kubectl --kubeconfig kubeconfig_rbac-only get pods -n rbac-only-namespace
+
+# References
+
+Big props to this medium post, which I regularly revisit:
 

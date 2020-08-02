@@ -3,3 +3,5 @@
 *.pem
 
 kubeconfig_*
+
+k8s/csr
