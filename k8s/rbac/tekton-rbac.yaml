@@ -1,0 +1,173 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: admins-namespace
+  name: admins-tekton-role
+rules:
+- apiGroups:
+  - "tekton.dev"
+  resources:
+  - conditions
+  - pipelineresources
+  - pipelineruns
+  - pipelines
+  - taskruns
+  - tasks
+  verbs:
+  - create
+  - get
+  - update
+  - patch
+  - delete
+  - list
+  - update
+  - patch
+  - delete
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: tekton-pipelines
+  name: admins-tekton-other
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - services
+  verbs:
+  - create
+  - get
+  - update
+  - patch
+  - delete
+  - list
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - "apps"
+  resources:
+  - deployments
+  verbs:
+  - create
+  - get
+  - list
+  - update
+  - patch
+  - delete
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: developers-namespace
+  name: developers-tekton-role
+rules:
+- apiGroups:
+  - "tekton.dev"
+  resources:
+  - conditions
+  - pipelineresources
+  - pipelineruns
+  - pipelines
+  - taskruns
+  - tasks
+  verbs:
+  - get
+  - list
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: admins-tekton-rolebinding
+  namespace: admins-namespace
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: admins-tekton-role
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: tekton-rbac-test-admins
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developers-tekton-rolebinding
+  namespace: developers-namespace
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: developers-tekton-role
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: tekton-rbac-test-developers
+
+---
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: tekton-pipelines
+  name: allow-port-forward
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/portforward"]
+  verbs: ["get", "list", "create"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: allow-port-forward-admins
+  namespace: tekton-pipelines
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: tekton-rbac-test-admins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: allow-port-forward
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: allow-tekton-other-admins
+  namespace: tekton-pipelines
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: tekton-rbac-test-admins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: admins-tekton-other
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: allow-port-forward-developers
+  namespace: tekton-pipelines
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: tekton-rbac-test-developers
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: allow-port-forward
