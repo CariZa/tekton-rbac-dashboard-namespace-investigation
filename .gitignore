@@ -4,4 +4,7 @@
 
 kubeconfig_*
 
-k8s/csr
+k8s/csr/
+
+.DS_Store
+
